@@ -35,17 +35,19 @@ initialField = FieldState 0 0 (field fieldWidth fieldHeight)
 
 drawField :: FieldState -> Picture
 drawField fieldS = pictures [
-        drawCell 0 0
-      , color red $ drawCell fCellSize 0
-      , color green $ drawCell 0 fCellSize
-      , color blue $ drawCell fCellSize fCellSize   ]
+        drawCell True 0 0
+      , drawCell True 1 0
+      , drawCell False 0 1
+      , drawCell False 1 1
+    ]
 
 
-drawCell :: Float -> Float -> Picture
-drawCell x_pos y_pos = translate (x_base + x_pos) (y_base - y_pos) $ rectangleSolid fCellSize fCellSize
+drawCell :: Bool -> Float -> Float -> Picture
+drawCell isLive x_pos y_pos = translate (x_base + x_pos * fCellSize) (y_base - y_pos * fCellSize) $ rectPict fCellSize fCellSize
     where
         x_base = fromIntegral $ -(windowWidth `quot` 2) + (cellSize `quot` 2)
         y_base = fromIntegral $ (windowHeight `quot` 2) - (cellSize `quot` 2)
+        rectPict = if isLive then rectangleSolid else rectangleWire
 
 
 updateField :: Event -> FieldState -> FieldState
