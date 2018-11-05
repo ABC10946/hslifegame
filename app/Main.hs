@@ -34,20 +34,20 @@ initialField = FieldState 0 0 (field fieldWidth fieldHeight)
         field width height = replicate height $ replicate width False
 
 drawField :: FieldState -> Picture
-drawField fieldS = pictures [
-        drawCell True 0 0
-      , drawCell True 1 0
-      , drawCell False 0 1
-      , drawCell False 1 1
-    ]
+drawField fieldS = pictures $ map (drawCell fieldS) posMat
+    where
+        posMat = [(x,y) | x <- [0,1..(length ((field fieldS) !! 0)-1)], y <- [0,1..((length (field fieldS))-1)]]
 
 
-drawCell :: Bool -> Float -> Float -> Picture
-drawCell isLive x_pos y_pos = translate (x_base + x_pos * fCellSize) (y_base - y_pos * fCellSize) $ rectPict fCellSize fCellSize
+drawCell :: FieldState -> (Int,Int) -> Picture
+drawCell fieldS (x_pos,y_pos) = translate (x_base + fX_pos * fCellSize) (y_base - fY_pos * fCellSize) $ rectPict fCellSize fCellSize
     where
         x_base = fromIntegral $ -(windowWidth `quot` 2) + (cellSize `quot` 2)
         y_base = fromIntegral $ (windowHeight `quot` 2) - (cellSize `quot` 2)
         rectPict = if isLive then rectangleSolid else rectangleWire
+        isLive = (((field fieldS) !! y_pos) !! x_pos) 
+        fX_pos = fromIntegral x_pos
+        fY_pos = fromIntegral y_pos
 
 
 updateField :: Event -> FieldState -> FieldState
