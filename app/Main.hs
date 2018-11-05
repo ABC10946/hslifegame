@@ -10,6 +10,9 @@ windowHeight = 480
 cellSize :: Int
 cellSize = 20
 
+fCellSize :: Float
+fCellSize = fromIntegral cellSize
+
 fieldWidth, fieldHeight :: Int
 fieldWidth = windowWidth `quot` cellSize
 fieldHeight = windowHeight `quot` cellSize
@@ -32,16 +35,18 @@ initialField = FieldState 0 0 (field fieldWidth fieldHeight)
 
 drawField :: FieldState -> Picture
 drawField fieldS = pictures [
-        translate x_pos y_pos $ rectangleSolid fCellSize fCellSize
-      , color red $ translate (x_pos + fCellSize) y_pos $ rectangleSolid fCellSize fCellSize
-      , color green $ translate x_pos (y_pos - fCellSize) $ rectangleSolid fCellSize fCellSize
-      , color blue $ translate (x_pos + fCellSize) (y_pos - fCellSize) $ rectangleSolid fCellSize fCellSize
+        drawCell 0 0
+      , color red $ drawCell fCellSize 0
+      , color green $ drawCell 0 fCellSize
+      , color blue $ drawCell fCellSize fCellSize   ]
 
-    ]
+
+drawCell :: Float -> Float -> Picture
+drawCell x_pos y_pos = translate (x_base + x_pos) (y_base - y_pos) $ rectangleSolid fCellSize fCellSize
     where
-        x_pos = fromIntegral $ -(windowWidth `quot` 2) +  (cellSize `quot` 2)
-        y_pos = fromIntegral $ (windowHeight `quot` 2) - (cellSize `quot` 2)
-        fCellSize = fromIntegral cellSize
+        x_base = fromIntegral $ -(windowWidth `quot` 2) + (cellSize `quot` 2)
+        y_base = fromIntegral $ (windowHeight `quot` 2) - (cellSize `quot` 2)
+
 
 updateField :: Event -> FieldState -> FieldState
 updateField _ = id
