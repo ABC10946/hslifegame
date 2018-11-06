@@ -3,6 +3,8 @@ module Main where
 import Graphics.Gloss
 import Graphics.Gloss.Interface.IO.Game
 
+type Field = [[Bool]
+
 windowWidth, windowHeight :: Int
 windowWidth = 640
 windowHeight = 480
@@ -24,13 +26,13 @@ data FieldState = FieldState
     {
         cursor_x :: Int
       , cursor_y :: Int
-      , field :: [[Bool]]
+      , field :: Field
     }
 
 initialField :: FieldState
 initialField = FieldState 0 0 (field fieldWidth fieldHeight)
     where
-        field :: Int -> Int -> [[Bool]]
+        field :: Int -> Int -> Field
         field width height = replicate height $ replicate width False
 
 drawField :: FieldState -> Picture
