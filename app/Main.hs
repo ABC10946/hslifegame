@@ -1,62 +1,41 @@
 module Main where
 
-import Graphics.Gloss
+import Lifegame
+import Draw
+import Types
+import Graphics.Gloss 
 import Graphics.Gloss.Interface.IO.Game
 
-type Field = [[Bool]
-
-windowWidth, windowHeight :: Int
-windowWidth = 640
-windowHeight = 480
-
-cellSize :: Int
-cellSize = 20
-
-fCellSize :: Float
-fCellSize = fromIntegral cellSize
-
-fieldWidth, fieldHeight :: Int
-fieldWidth = windowWidth `quot` cellSize
-fieldHeight = windowHeight `quot` cellSize
 
 window :: Display
 window = InWindow "Lifegame in Haskell!!" (windowWidth, windowHeight) (100,100)
 
-data FieldState = FieldState
-    {
-        cursor_x :: Int
-      , cursor_y :: Int
-      , field :: Field
-    }
-
-initialField :: FieldState
-initialField = FieldState 0 0 (field fieldWidth fieldHeight)
-    where
-        field :: Int -> Int -> Field
-        field width height = replicate height $ replicate width False
-
-drawField :: FieldState -> Picture
-drawField fieldS = pictures $ map (drawCell fieldS) posMat
-    where
-        posMat = [(x,y) | x <- [0,1..(length ((field fieldS) !! 0)-1)], y <- [0,1..((length (field fieldS))-1)]]
+initialFieldState :: FieldState
+initialFieldState = FieldState 0 0 (setCursorTop (initField (fieldWidth,fieldHeight)) True)
 
 
-drawCell :: FieldState -> (Int,Int) -> Picture
-drawCell fieldS (x_pos,y_pos) = translate (x_base + fX_pos * fCellSize) (y_base - fY_pos * fCellSize) $ rectPict fCellSize fCellSize
-    where
-        x_base = fromIntegral $ -(windowWidth `quot` 2) + (cellSize `quot` 2)
-        y_base = fromIntegral $ (windowHeight `quot` 2) - (cellSize `quot` 2)
-        rectPict = if isLive then rectangleSolid else rectangleWire
-        isLive = (((field fieldS) !! y_pos) !! x_pos) 
-        fX_pos = fromIntegral x_pos
-        fY_pos = fromIntegral y_pos
+
+up, left, down, right :: FieldState -> FieldState
+up    fieldS = fieldS {cursor_y = cursor_y fieldS - 1, field = fieldCursorChange True (field fieldS) (cursor_x fieldS,cursor_y fieldS)}
+left  fieldS = fieldS {cursor_x = cursor_x fieldS - 1, field = fieldCursorChange True (field fieldS) (cursor_x fieldS,cursor_y fieldS)}
+down  fieldS = fieldS {cursor_y = cursor_y fieldS + 1, field = fieldCursorChange True (field fieldS) (cursor_x fieldS,cursor_y fieldS)}
+right fieldS = fieldS {cursor_x = cursor_x fieldS + 1, field = fieldCursorChange True (field fieldS) (cursor_x fieldS,cursor_y fieldS)}
+
 
 
 updateField :: Event -> FieldState -> FieldState
-updateField _ = id
+updateField (EventKey key ks _ _) fieldS = updateBoxWithKey key ks fieldS
+updateField _                     fieldS = fieldS
+
+updateBoxWithKey :: Key -> KeyState -> FieldState -> FieldState
+updateBoxWithKey (SpecialKey KeyUp)    ks = if ks == Down then up else id
+updateBoxWithKey (SpecialKey KeyLeft)  ks = if ks == Down then left else id
+updateBoxWithKey (SpecialKey KeyDown)  ks = if ks == Down then down else id
+updateBoxWithKey (SpecialKey KeyRight) ks = if ks == Down then right else id
+updateBoxWithKey _                     _  = id
 
 nextField :: Float -> FieldState -> FieldState
 nextField _ = id
 
 main :: IO ()
-main = play window white 30 initialField drawField updateField nextField
+main = play window white 30 initialFieldState drawField updateField nextField
