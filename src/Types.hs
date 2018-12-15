@@ -13,6 +13,7 @@ module Types
         cursor_x,
         cursor_y,
         field,
+        isPlay,
         windowWidth,
         windowHeight,
         cellSize,
@@ -33,14 +34,15 @@ fCellSize :: Float
 fCellSize = fromIntegral cellSize
 
 fieldWidth, fieldHeight :: Int
-fieldWidth = windowWidth `quot` cellSize
-fieldHeight = windowHeight `quot` cellSize
+fieldWidth = (windowWidth+(cellSize*4)) `quot` cellSize
+fieldHeight = (windowHeight+(cellSize*4)) `quot` cellSize
 
 data FieldState = FieldState
     {
         cursor_x :: Int
       , cursor_y :: Int
       , field :: Field
+      , isPlay :: Bool
     }
 
 type ScreenSize = (Int,Int)
