@@ -34,10 +34,10 @@ move fieldS (x,y) dir
         beforeMoveField ::  Field
         beforeMoveField = clearCursorOnField (field fieldS)
         p@(x_,y_)
-            | dir == CUp    = (x                           , (max (y-1) 0)                )
-            | dir == CLeft  = ((max (x-1) 0)               , y                            )
-            | dir == CDown  = (x                           , (min (y+1) (fieldHeight - 1)))
-            | dir == CRight = ((min (x+1) (fieldWidth - 1)),y                             )
+            | dir == CUp    = (x                           , max (y-1) 0                  )
+            | dir == CLeft  = (max (x-1) 0                 , y                            )
+            | dir == CDown  = (x                           , min (y+1) (fieldHeight - 1)  )
+            | dir == CRight = (min (x+1) (fieldWidth - 1)  ,y                             )
 
 updateField :: Event -> FieldState -> FieldState
 updateField (EventKey key ks _ _) fieldS = updateFieldWithKey key ks fieldS
@@ -79,7 +79,7 @@ updateFieldWithKey _                     _  = id
 
 nextField :: Float -> FieldState -> FieldState
 nextField _ fieldS
-    | (isPlay fieldS) = fieldS {field = step (field fieldS)}
+    | isPlay fieldS   = fieldS {field = step (field fieldS)}
     | otherwise       = fieldS
 
 main :: IO ()
