@@ -6,7 +6,6 @@ import Types
 import Graphics.Gloss 
 import Graphics.Gloss.Interface.IO.Game
 import Data.Fixed
-import Debug.Trace
 
 
 window :: Display
