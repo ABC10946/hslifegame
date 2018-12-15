@@ -2,6 +2,8 @@
 
 Lifegame implemented in Haskell with Gloss
 
+![](./images/screenshot.png)
+
 # Installation and Run
 
 ``` 
