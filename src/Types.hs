@@ -9,6 +9,7 @@ module Types
         Cell,
         CState(Live,Dead),
         CursorState,
+        CDirect(CUp,CLeft,CDown,CRight),
         cursor_x,
         cursor_y,
         field,
@@ -50,3 +51,4 @@ type LinePosition = Int
 type CursorState = Bool
 type Cell = (CursorState,CState)
 data CState = Live | Dead deriving Eq
+data CDirect = CUp | CLeft | CDown | CRight deriving Eq
