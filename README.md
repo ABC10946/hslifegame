@@ -15,7 +15,7 @@ $ stack run
 
 |key|control|
 |-|-|
-|q or esc|quit|
+|esc|quit|
 |Space|change play or stop|
 |Left|move cursor to left|
 |Down|move cursor to down|
