@@ -7,7 +7,7 @@ Lifegame implemented in Haskell with Gloss
 # Installation and Run
 
 ``` 
-$ git clone https://github.com/rect1114/hslifegame && cd ./hslifegame
+$ git clone https://github.com/ABC10946/hslifegame && cd ./hslifegame
 $ stack run
 ```
 
