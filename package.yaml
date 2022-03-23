@@ -1,10 +1,10 @@
-name:                hslifegame
+eame:                hslifegame
 version:             0.1.0.0
-github:              "rect1114/hslifegame"
+github:              "ABC10946/hslifegame"
 license:             BSD3
-author:              "rect1114"
-maintainer:          "rectangle1114@gmail.com"
-copyright:           "2018 rect1114"
+author:              "ABC10946"
+maintainer:          "abctech10946@gmail.com"
+copyright:           "2018 ABC10946"
 
 extra-source-files:
 - README.md
@@ -17,7 +17,7 @@ extra-source-files:
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/rect1114/hslifegame#readme>
+description:         Please see the README on GitHub at <https://github.com/ABC10946/hslifegame#readme>
 
 dependencies:
 - base >= 4.7 && < 5
